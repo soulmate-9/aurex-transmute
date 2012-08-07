@@ -1,5 +1,5 @@
-AUREX_RELEASE="10.04"
-UBUNTU_CODENAME="lucid"
-AUREX_CODENAME="lucid"
+AUREX_RELEASE="12.04"
+UBUNTU_CODENAME="precise"
+AUREX_CODENAME="precise"
 UBUNTU_DEFMIRROR="http://archive.ubuntu.com/ubuntu/"
 AUREX_DEFMIRROR="http://intranet.ausiasmarch.net/aurex/"

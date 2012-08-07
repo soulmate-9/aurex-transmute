@@ -1,8 +1,8 @@
-aurex-transmute (0.18) UNRELEASED; urgency=low
+aurex-transmute (0.20) precise; urgency=low
 
-  * NOT RELEASED YET
+  * First precise version
 
- -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Mon, 31 Oct 2011 08:21:57 +0100
+ -- Luis Garcia Gisbert <luisgg@gmail.com>  Tue, 07 Aug 2012 19:38:18 +0200
 
 aurex-transmute (0.17) lucid; urgency=low
 
