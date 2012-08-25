@@ -1,3 +1,9 @@
+aurex-transmute (0.21) precise; urgency=low
+
+  * Added precise repository key
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sat, 25 Aug 2012 20:02:12 +0200
+
 aurex-transmute (0.20) precise; urgency=low
 
   * First precise version
