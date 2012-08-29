@@ -211,7 +211,7 @@ iso_gen(){
 		cp "$INITRD_FILE" live-cd/casper/initrd.lz
 	fi
 	ISO_ARCH="$(chroot chroot dpkg --print-architecture)"
-	DISK_NAME="$VOLUME_LABEL \"Lucid\" - Release $ISO_ARCH"
+	DISK_NAME="$VOLUME_LABEL \"Precise\" - Release $ISO_ARCH"
 	echo "$DISK_NAME ($(date "+%Y%m%d.%H%M%S"))" > live-cd/.disk/info
 	sed -i -e "/^#define DISKNAME/s%^.*%#define DISKNAME  $DISK_NAME%" live-cd/README.diskdefines
 
@@ -219,22 +219,22 @@ iso_gen(){
 	SPLASH_IMAGE="/usr/share/pixmaps/aurex/livedesktop-$ISO_ARCH.png"
 	[ ! -r "$SPLASH_IMAGE" ] || convert_to_rle "$SPLASH_IMAGE" > live-cd/isolinux/aurex.rle
 	
-	LABEL_LIST="$(list_labels live-cd/isolinux/text.cfg)"
+	LABEL_LIST="$(list_labels "$TEXT_CFG")"
 	CFG_FILE="live-cd/isolinux/isolinux.cfg"
 	SAFE_BOOT="noapic noapm nodma nomce nolapic nosmp vga=normal"
 	for l in $LABEL_LIST ; do
 		echo "LABEL $l" >> $CFG_FILE
-		get_label "$l" live-cd/isolinux/text.cfg >> $CFG_FILE
+		get_label "$l" "$TEXT_CFG" >> $CFG_FILE
 		case "$l" in
 			live)
 				echo "LABEL 1" >> $CFG_FILE
-				get_label "$l" live-cd/isolinux/text.cfg >> $CFG_FILE
+				get_label "$l" "$TEXT_CFG" >> $CFG_FILE
 				echo "LABEL 3" >> $CFG_FILE
-				get_label "$l" live-cd/isolinux/text.cfg |sed -e "/^[[:blank:]]*append[[:blank:]]/s%--.*$%$SAFE_BOOT --%" >> $CFG_FILE
+				get_label "$l" "$TEXT_CFG" |sed -e "/^[[:blank:]]*append[[:blank:]]/s%--.*$%$SAFE_BOOT --%" >> $CFG_FILE
 				;;
 			live-install)
 				echo "LABEL 2" >> $CFG_FILE
-				get_label "$l" live-cd/isolinux/text.cfg >> $CFG_FILE
+				get_label "$l" "$TEXT_CFG" >> $CFG_FILE
 				;;
 		esac
 	done
@@ -281,6 +281,10 @@ EXTRA_LIST="live-cd/casper/filesystem.squashfs live-cd/casper/filesystem.manifes
 
 CHROOT_PKG_DIR="chroot/usr/share/aurex-transmute/translive/packages"
 LIVE_PKG_LIST="aurex-ubiquity-transmute aurex-ubiquity-theme"
+
+#TEXT_CFG="live-cd/isolinux/text.cfg"
+TEXT_CFG="live-cd/isolinux/txt.cfg"
+
 # main
 # ----
 
