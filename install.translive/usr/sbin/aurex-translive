@@ -32,7 +32,7 @@ die(){
 }
 
 usage(){
-	die "Usage: $(basename "$0") [options] {copy|unsquash|update-chroot|pre-build|squash|geniso|post-build|build}\n\
+	die "Usage: $(basename "$0") [options] {copy|unsquash|update-chroot|squash|geniso|pre-build|post-build|build}\n\
        Options:  --no-interactive\n\
                  --iso-file=ISOFILE\n\
                  --pkg-list=PKG_LIST_FILE"
@@ -176,7 +176,7 @@ kernel_purge(){
 	for k in $HEADER_GENERIC ; do
 		HEADER_PURGE="$HEADER_PURGE ${k%-generic}"
 	done
-	chroot chroot apt-get --force-yes -y --allow-unauthenticated remove --purge $KERNEL_GENERIC $HEADER_PURGE
+	[ -z "$KERNEL_GENERIC" -a -z "$HEADER_PURGE" ] || chroot chroot apt-get --force-yes -y --allow-unauthenticated remove --purge $KERNEL_GENERIC $HEADER_PURGE
 }
 
 chroot_update(){
@@ -199,6 +199,7 @@ test_id(){
 iso_gen(){
 	chroot chroot dpkg-query -W --showformat='${Package} ${Version}\n' > live-cd/casper/filesystem.manifest
 	cp live-cd/casper/filesystem.manifest live-cd/casper/filesystem.manifest-desktop
+	rm -f live-cd/casper/filesystem.manifest-remove
 	sed -i '/ubiquity/d;/casper/d' live-cd/casper/filesystem.manifest-desktop
 
 	printf $(du -sx --block-size=1 chroot | cut -f1) > live-cd/casper/filesystem.size

@@ -1,3 +1,9 @@
+aurex-transmute (0.24) precise; urgency=low
+
+  * preseed updated
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Thu, 30 Aug 2012 00:36:16 +0200
+
 aurex-transmute (0.23) precise; urgency=low
 
   * Fix label generation in isolinux.cfg (broken due to changes
