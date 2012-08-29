@@ -278,7 +278,7 @@ SOURCE_DIR="$(mktemp -d)"
 SOURCE_ISO=""
 DIR_LIST="chroot live-cd live-cd/casper live-cd/isolinux"
 FILE_LIST="live-cd/casper/vmlinuz live-cd/casper/initrd.lz live-cd/.disk/info"
-EXTRA_LIST="live-cd/casper/filesystem.squashfs live-cd/casper/filesystem.manifest live-cd/casper/filesystem.manifest-desktop live-cd/casper/filesystem.size live-cd/md5sum.txt"
+EXTRA_LIST="live-cd/casper/filesystem.squashfs live-cd/casper/filesystem.manifest live-cd/casper/filesystem.size live-cd/md5sum.txt"
 
 CHROOT_PKG_DIR="chroot/usr/share/aurex-transmute/translive/packages"
 LIVE_PKG_LIST="aurex-ubiquity-transmute aurex-ubiquity-theme"
