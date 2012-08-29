@@ -45,6 +45,9 @@ deb-src http://es.archive.ubuntu.com/ubuntu/ precise-backports main restricted u
 # deb http://archive.canonical.com/ubuntu precise partner
 # deb-src http://archive.canonical.com/ubuntu precise partner
 
+deb http://extras.ubuntu.com/ubuntu precise main
+deb-src http://extras.ubuntu.com/ubuntu precise main
+
 deb http://security.ubuntu.com/ubuntu precise-security main restricted
 deb-src http://security.ubuntu.com/ubuntu precise-security main restricted
 deb http://security.ubuntu.com/ubuntu precise-security universe

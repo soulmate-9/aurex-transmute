@@ -74,10 +74,10 @@ test_ubuntu_sources(){
 			fi
 		done
 	done
-	if ! grep -q "^deb[[:blank:]]\+[^[:blank:]]\+[[:blank:]]\+$UBUNTU_CODENAME[[:blank:]]\+partner\($\|[[:blank:]]\)" /etc/apt/sources.list ; then
-		echo "$UBUNTU_CODENAME$d partner: not found"
-                return 1
-	fi
+#	if ! grep -q "^deb[[:blank:]]\+[^[:blank:]]\+[[:blank:]]\+$UBUNTU_CODENAME[[:blank:]]\+partner\($\|[[:blank:]]\)" /etc/apt/sources.list ; then
+#		echo "$UBUNTU_CODENAME$d partner: not found"
+#                return 1
+#	fi
 	return 0
 }	
 
