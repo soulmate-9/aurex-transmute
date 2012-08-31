@@ -1,3 +1,11 @@
+aurex-transmute (0.25) precise; urgency=low
+
+  * aurex-translive: check for initrd updates
+                     add aurex-live-settings to install list
+                     add aurex-live packages to remove list
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Fri, 31 Aug 2012 17:56:45 +0200
+
 aurex-transmute (0.24) precise; urgency=low
 
   * preseed updated

@@ -200,15 +200,18 @@ iso_gen(){
 	chroot chroot dpkg-query -W --showformat='${Package} ${Version}\n' > live-cd/casper/filesystem.manifest
 	cp live-cd/casper/filesystem.manifest live-cd/casper/filesystem.manifest-desktop
 	rm -f live-cd/casper/filesystem.manifest-remove
-	sed -i '/ubiquity/d;/casper/d' live-cd/casper/filesystem.manifest-desktop
+	sed -i '/ubiquity/d;/casper/d;/aurex-live/d' live-cd/casper/filesystem.manifest-desktop
 
 	printf $(du -sx --block-size=1 chroot | cut -f1) > live-cd/casper/filesystem.size
 
 	VMLINUZ_FILE="$(ls -1 chroot/boot/vmlinuz-* 2>/dev/null |sort |tail -1)"
+	INITRD_FILE="$(ls -1 chroot/boot/initrd.img-* 2>/dev/null |sort |tail -1)"
 	if [ "$VMLINUZ_FILE" ] && [ -r "$VMLINUZ_FILE" ] ; then
 		VMLINUZ_VERSION="${VMLINUZ_FILE#*vmlinuz-}"
 		INITRD_FILE="chroot/boot/initrd.img-$VMLINUZ_VERSION"
 		cp "$VMLINUZ_FILE" live-cd/casper/vmlinuz
+		cp "$INITRD_FILE" live-cd/casper/initrd.lz
+	elif [ "$INITRD_FILE" ]  && [ -r "$INITRD_FILE" ] ; then
 		cp "$INITRD_FILE" live-cd/casper/initrd.lz
 	fi
 	ISO_ARCH="$(chroot chroot dpkg --print-architecture)"
@@ -281,7 +284,7 @@ FILE_LIST="live-cd/casper/vmlinuz live-cd/casper/initrd.lz live-cd/.disk/info"
 EXTRA_LIST="live-cd/casper/filesystem.squashfs live-cd/casper/filesystem.manifest live-cd/casper/filesystem.size live-cd/md5sum.txt"
 
 CHROOT_PKG_DIR="chroot/usr/share/aurex-transmute/translive/packages"
-LIVE_PKG_LIST="aurex-ubiquity-transmute aurex-ubiquity-theme"
+LIVE_PKG_LIST="aurex-ubiquity-transmute aurex-ubiquity-theme aurex-live-settings"
 
 #TEXT_CFG="live-cd/isolinux/text.cfg"
 TEXT_CFG="live-cd/isolinux/txt.cfg"
