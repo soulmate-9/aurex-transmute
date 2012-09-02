@@ -1,3 +1,9 @@
+aurex-transmute (0.28) precise; urgency=low
+
+  * aurex-translive: fixed syslinux issing depends
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Mon, 03 Sep 2012 01:24:57 +0200
+
 aurex-transmute (0.27) precise; urgency=low
 
   * Fixed (at last !) sources.list in chroot after build
