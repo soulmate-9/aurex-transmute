@@ -1,3 +1,10 @@
+aurex-transmute (0.26) precise; urgency=low
+
+  * Modified divert behaviour in aurex-transmute. If the "replacement" file size is zero,
+    "target" file is diverted, but the replacemente file IS NOT copied. 
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sun, 02 Sep 2012 19:33:24 +0200
+
 aurex-transmute (0.25) precise; urgency=low
 
   * aurex-translive: check for initrd updates
