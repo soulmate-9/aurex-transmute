@@ -128,7 +128,7 @@ chroot_unconfig(){
 	done
 
         chroot_translive_vars create live-mode
-	chroot chroot aurex-transmute transmute sources
+	chroot chroot aurex-transmute --force transmute sources
         chroot_translive_vars delete
 
 	rm -f chroot/$TRANS_DIR/aurex-translive-vars.sh
