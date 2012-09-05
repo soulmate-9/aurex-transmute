@@ -1,3 +1,10 @@
+aurex-transmute (0.29) precise; urgency=low
+
+  * Removed (temporarily???) kernel_purge in aurex-translive, because
+    breaks amd64 livecd generation.
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Wed, 05 Sep 2012 21:03:21 +0200
+
 aurex-transmute (0.28) precise; urgency=low
 
   * aurex-translive: fixed syslinux issing depends

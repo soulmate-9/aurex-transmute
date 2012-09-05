@@ -184,7 +184,7 @@ chroot_update(){
 	export LC_ALL=C
 	chroot chroot aurex-system-transmute full || true
 	chroot chroot apt-get --force-yes -y --allow-unauthenticated install $LIVE_PKG_LIST || true
-	kernel_purge
+	# kernel_purge
 }
 
 chroot_test(){
