@@ -170,13 +170,13 @@ chroot_umounts(){
 }
 
 kernel_purge(){
-	KERNEL_GENERIC="$(chroot chroot dpkg -l |cut -f 3 -d " " |grep "^linux-image-.*-generic$" |tr "\n" " ")"
-	HEADER_GENERIC="$(chroot chroot dpkg -l |cut -f 3 -d " " |grep "^linux-headers-.*-generic$" |tr "\n" " ")"
-	HEADER_PURGE="$HEADER_GENERIC"
-	for k in $HEADER_GENERIC ; do
-		HEADER_PURGE="$HEADER_PURGE ${k%-generic}"
-	done
-	[ -z "$KERNEL_GENERIC" -a -z "$HEADER_PURGE" ] || chroot chroot apt-get --force-yes -y --allow-unauthenticated remove --purge $KERNEL_GENERIC $HEADER_PURGE
+	KERNEL_GENERIC="$(chroot chroot dpkg -l |cut -f 3 -d " " |grep "linux\-image\-[[:digit:]]"  |sort  |sed -e "\$d" |tr "\n" " ")"
+#	HEADER_GENERIC="$(chroot chroot dpkg -l |cut -f 3 -d " " |grep "^linux-headers-.*-generic$" |tr "\n" " ")"
+#	HEADER_PURGE="$HEADER_GENERIC"
+#	for k in $HEADER_GENERIC ; do
+#		HEADER_PURGE="$HEADER_PURGE ${k%-generic}"
+#	done
+	[ -z "$KERNEL_GENERIC" -a -z "$HEADER_PURGE" ] || chroot chroot apt-get --force-yes -y --allow-unauthenticated remove --purge --auto-remove $KERNEL_GENERIC
 }
 
 chroot_update(){
@@ -184,7 +184,7 @@ chroot_update(){
 	export LC_ALL=C
 	chroot chroot aurex-system-transmute full || true
 	chroot chroot apt-get --force-yes -y --allow-unauthenticated install $LIVE_PKG_LIST || true
-	# kernel_purge
+	kernel_purge
 }
 
 chroot_test(){

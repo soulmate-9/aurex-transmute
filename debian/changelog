@@ -1,3 +1,9 @@
+aurex-transmute (0.30) precise; urgency=low
+
+  * Fixed kernel_purge function
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Wed, 05 Sep 2012 23:06:32 +0200
+
 aurex-transmute (0.29) precise; urgency=low
 
   * Removed (temporarily???) kernel_purge in aurex-translive, because
