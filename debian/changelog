@@ -1,3 +1,9 @@
+aurex-transmute (0.33) precise; urgency=low
+
+  * Added preseed for oracle-java7-installer
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sun, 19 May 2013 12:12:06 +0200
+
 aurex-transmute (0.32) precise; urgency=low
 
   * Added preseed for ldap-auth-config
