@@ -1,3 +1,10 @@
+aurex-transmute (0.34) precise; urgency=low
+
+  * Use vmlinuz.efi instead of vmlinuz in amd64 architecture
+  * update initrd for all kernels after chroot installation
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Fri, 13 Sep 2013 02:15:28 +0200
+
 aurex-transmute (0.33) precise; urgency=low
 
   * Added preseed for oracle-java7-installer

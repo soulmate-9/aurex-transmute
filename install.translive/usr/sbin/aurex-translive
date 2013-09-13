@@ -122,6 +122,8 @@ chroot_config(){
 }
 
 chroot_unconfig(){
+	# update initrd (plymouth issues)
+	chroot update-initramfs -u -k all || true
 	for f in $HOST_COPY_FILES ; do
 		rm chroot/$f
 		[ ! -e chroot/$f.aurex ] || mv chroot/$f.aurex chroot/$f
@@ -206,15 +208,17 @@ iso_gen(){
 
 	VMLINUZ_FILE="$(ls -1 chroot/boot/vmlinuz-* 2>/dev/null |sort |tail -1)"
 	INITRD_FILE="$(ls -1 chroot/boot/initrd.img-* 2>/dev/null |sort |tail -1)"
+	ISO_ARCH="$(chroot chroot dpkg --print-architecture)"
+	VMLINUZ_NAME="vmlinuz"
+	[ "$ISO_ARCH" = "i386" ] || VMLINUZ_NAME="vmlinuz.efi"
 	if [ "$VMLINUZ_FILE" ] && [ -r "$VMLINUZ_FILE" ] ; then
 		VMLINUZ_VERSION="${VMLINUZ_FILE#*vmlinuz-}"
 		INITRD_FILE="chroot/boot/initrd.img-$VMLINUZ_VERSION"
-		cp "$VMLINUZ_FILE" live-cd/casper/vmlinuz
+		cp "$VMLINUZ_FILE" live-cd/casper/$VMLINUZ_NAME
 		cp "$INITRD_FILE" live-cd/casper/initrd.lz
 	elif [ "$INITRD_FILE" ]  && [ -r "$INITRD_FILE" ] ; then
 		cp "$INITRD_FILE" live-cd/casper/initrd.lz
 	fi
-	ISO_ARCH="$(chroot chroot dpkg --print-architecture)"
 	DISK_NAME="$VOLUME_LABEL \"Precise\" - Release $ISO_ARCH"
 	echo "$DISK_NAME ($(date "+%Y%m%d.%H%M%S"))" > live-cd/.disk/info
 	sed -i -e "/^#define DISKNAME/s%^.*%#define DISKNAME  $DISK_NAME%" live-cd/README.diskdefines
