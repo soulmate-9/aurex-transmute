@@ -122,8 +122,8 @@ chroot_config(){
 }
 
 chroot_unconfig(){
-	# update initrd (plymouth issues)
-	chroot update-initramfs -u -k all || true
+	#	 update initrd (plymouth issues)
+	#	chroot chroot update-initramfs -u -k all || true
 	for f in $HOST_COPY_FILES ; do
 		rm chroot/$f
 		[ ! -e chroot/$f.aurex ] || mv chroot/$f.aurex chroot/$f
