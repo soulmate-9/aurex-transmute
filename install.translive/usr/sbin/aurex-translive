@@ -213,6 +213,8 @@ iso_gen(){
 	[ "$ISO_ARCH" = "i386" ] || VMLINUZ_NAME="vmlinuz.efi"
 	if [ "$VMLINUZ_FILE" ] && [ -r "$VMLINUZ_FILE" ] ; then
 		VMLINUZ_VERSION="${VMLINUZ_FILE#*vmlinuz-}"
+		# remove "efi.signed" if present
+		VMLINUZ_VERSION="${VMLINUZ_VERSION%.efi.signed}"
 		INITRD_FILE="chroot/boot/initrd.img-$VMLINUZ_VERSION"
 		cp "$VMLINUZ_FILE" live-cd/casper/$VMLINUZ_NAME
 		cp "$INITRD_FILE" live-cd/casper/initrd.lz
