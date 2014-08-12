@@ -1,3 +1,9 @@
+aurex-transmute (14.04.1) trusty; urgency=medium
+
+  * First trusty version
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 12 Aug 2014 19:28:15 +0200
+
 aurex-transmute (0.36) precise; urgency=low
 
   * Remove the (unnecessary) update-initramfs ov v.0.34

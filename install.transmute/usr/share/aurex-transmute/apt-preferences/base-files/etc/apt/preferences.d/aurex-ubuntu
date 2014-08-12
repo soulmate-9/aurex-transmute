@@ -1,7 +1,7 @@
 Package: *
-Pin: release a=precise-proposed
+Pin: release a=trusty-proposed
 Pin-Priority: 450
 
 Package: *
-Pin: release a=precise-backports
+Pin: release a=trusty-backports
 Pin-Priority: 400
