@@ -1,3 +1,9 @@
+aurex-transmute (14.04.3) trusty; urgency=medium
+
+  * More configuration updates
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sun, 31 Aug 2014 20:16:20 +0200
+
 aurex-transmute (14.04.2) trusty; urgency=medium
 
   * Default configuration file updated for aurex 14.04
