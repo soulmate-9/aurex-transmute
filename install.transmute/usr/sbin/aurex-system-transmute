@@ -35,6 +35,10 @@ usage(){
 }
 
 do_apt(){
+	if [ "$(dpkg --print-architecture)" = "amd64" ] ; then
+		# add i386 as foreign architecture
+		dpkg --add-architecture i386 || true
+	fi
         apt-get update || true
         apt-get --force-yes -y --allow-unauthenticated dist-upgrade || true
 }
