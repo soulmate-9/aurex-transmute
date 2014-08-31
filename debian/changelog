@@ -1,3 +1,11 @@
+aurex-transmute (14.04.2) trusty; urgency=medium
+
+  * Default configuration file updated for aurex 14.04
+  * Set iso ouput directory as option and use a bit more
+    user friendly naming convention for generated isos
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sun, 31 Aug 2014 19:52:07 +0200
+
 aurex-transmute (14.04.1) trusty; urgency=medium
 
   * First trusty version

@@ -251,8 +251,14 @@ iso_gen(){
 
 	rm -f live-cd/md5sum.txt
 	( cd live-cd; find -type f -print0 | sudo xargs -0 md5sum | grep -v isolinux/boot.cat | sudo tee md5sum.txt ; )
-	ISO_NAME="$BASE_ISONAME-$(chroot chroot dpkg --print-architecture).iso"
-	mkisofs -D -r -V "$VOLUME_LABEL" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o "$ISO_NAME" live-cd
+	OUTPUT_DIR="./"
+	if [ "$ISO_OUTPUT_DIR" ] && [ -d "$ISO_OUTPUT_DIR" ] ; then
+		OUTPUT_DIR="${ISO_OUTPUT_DIR}/"
+	fi
+	ISO_NAME0="${BASE_ISONAME}-$(chroot chroot dpkg --print-architecture)"
+	ISO_NAME="${ISO_NAME0}_$(date '+%F_%H:%M').iso"
+	mkisofs -D -r -V "$VOLUME_LABEL" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -o "${OUTPUT_DIR}${ISO_NAME}" live-cd
+	(cd "$OUTPUT_DIR"; rm -f "${ISO_NAME0}-latest.iso";  ln -s "${ISO_NAME}" "${ISO_NAME0}-latest.iso" ) 
 }
 
 get_label(){
