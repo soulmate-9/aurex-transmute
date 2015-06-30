@@ -144,8 +144,10 @@ trans_sources(){
 	[ "$UBUNTU_MIRROR" ] || UBUNTU_MIRROR="$UBUNTU_DEFMIRROR"
 	UBUNTU_MIRROR=${UBUNTU_FORCEMIRROR:-$UBUNTU_MIRROR}
 	AUREX_MIRROR=${AUREX_FORCEMIRROR:-$AUREX_DEFMIRROR}
+	UBUNTU_PARTNER=${UBUNTU_FORCEPARTNER:-$UBUNTU_DEFPARTNER}
+	UBUNTU_EXTRAS=${UBUNTU_FORCEEXTRAS:-$UBUNTU_DEFEXTRAS}
 	for t in aurex-sources ubuntu-sources ; do
-		sed -e "s%_@_UBUNTU_MIRROR_@_%$UBUNTU_MIRROR%g;s%_@_AUREX_MIRROR_@_%$AUREX_MIRROR%" /usr/share/aurex/templates/transmute/etc/apt/$t.list >> "$TMPFILE"
+		sed -e "s%_@_UBUNTU_MIRROR_@_%$UBUNTU_MIRROR%g;s%_@_AUREX_MIRROR_@_%$AUREX_MIRROR%;s%_@_UBUNTU_PARTNER_@_%$UBUNTU_PARTNER%g;s%_@_UBUNTU_EXTRAS_@_%$UBUNTU_EXTRAS%g" /usr/share/aurex/templates/transmute/etc/apt/$t.list >> "$TMPFILE"
 	done
 	TIMESTAMP="$(date "+%Y%m%d.%H%M%S")"
 	[ "$FORCE" ] || cp /etc/apt/sources.list /etc/apt/sources.list.aurex.$TIMESTAMP

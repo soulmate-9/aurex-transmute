@@ -1,3 +1,9 @@
+aurex-transmute (14.04.5) trusty; urgency=medium
+
+  * Manage ubuntu partner and extras in sources.list
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 30 Jun 2015 11:54:36 +0200
+
 aurex-transmute (14.04.4) trusty; urgency=medium
 
   * Add i386 as foreign architecture for amd64 systems in aurex-system-transmute

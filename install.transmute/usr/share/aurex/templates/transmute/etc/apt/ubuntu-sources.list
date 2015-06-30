@@ -25,10 +25,12 @@ deb _@_UBUNTU_MIRROR_@_ trusty-backports main restricted universe multiverse
 #deb-src _@_UBUNTU_MIRROR_@_ trusty-backports main restricted universe multiverse
 
 # partner
-deb http://archive.canonical.com/ubuntu trusty partner
+deb _@_UBUNTU_PARTNER_@_ trusty partner
+#deb http://archive.canonical.com/ubuntu trusty partner
 # deb-src http://archive.canonical.com/ubuntu trusty partner
 
 # extras
-deb http://extras.ubuntu.com/ubuntu trusty main
+deb _@_UBUNTU_EXTRAS_@_ trusty main
+#deb http://extras.ubuntu.com/ubuntu trusty main
 #deb-src http://extras.ubuntu.com/ubuntu trusty main
 
