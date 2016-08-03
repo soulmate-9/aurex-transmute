@@ -3,7 +3,7 @@ Section: admin
 Priority: optional
 Maintainer: Luis Antonio Garcia Gisbert <luisgg@gmail.com>
 Build-Depends: debhelper (>= 7.0), gettext
-Standards-Version: 3.9.3
+Standards-Version:  3.9.7
 
 Package: aurex-transmute
 Architecture: all

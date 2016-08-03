@@ -1,36 +1,36 @@
-#deb cdrom:[Ubuntu 12.04.2 LTS _Precise Pangolin_ - Release i386 (20110211.1)]/ trusty main restricted
+#deb cdrom:[Ubuntu 12.04.2 LTS _Precise Pangolin_ - Release i386 (20110211.1)]/ xenial main restricted
 # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
 # newer versions of the distribution.
 
 # -------------
 # Ubuntu sources
 # -------------
-deb _@_UBUNTU_MIRROR_@_ trusty main restricted universe multiverse
-#deb-src _@_UBUNTU_MIRROR_@_ trusty main restricted universe multiverse
+deb _@_UBUNTU_MIRROR_@_ xenial main restricted universe multiverse
+#deb-src _@_UBUNTU_MIRROR_@_ xenial main restricted universe multiverse
 
 # updates
-deb _@_UBUNTU_MIRROR_@_ trusty-updates main restricted universe multiverse
-#deb-src _@_UBUNTU_MIRROR_@_ trusty-updates main restricted universe multiverse
+deb _@_UBUNTU_MIRROR_@_ xenial-updates main restricted universe multiverse
+#deb-src _@_UBUNTU_MIRROR_@_ xenial-updates main restricted universe multiverse
 
 # security
-deb _@_UBUNTU_MIRROR_@_ trusty-security main restricted universe multiverse
-#deb-src _@_UBUNTU_MIRROR_@_ trusty-security main restricted universe multiverse
+deb _@_UBUNTU_MIRROR_@_ xenial-security main restricted universe multiverse
+#deb-src _@_UBUNTU_MIRROR_@_ xenial-security main restricted universe multiverse
 
 # proposed
-deb _@_UBUNTU_MIRROR_@_ trusty-proposed main restricted universe multiverse
-#deb-src _@_UBUNTU_MIRROR_@_ trusty-proposed main restricted universe multiverse
+deb _@_UBUNTU_MIRROR_@_ xenial-proposed main restricted universe multiverse
+#deb-src _@_UBUNTU_MIRROR_@_ xenial-proposed main restricted universe multiverse
 
 # backports
-deb _@_UBUNTU_MIRROR_@_ trusty-backports main restricted universe multiverse
-#deb-src _@_UBUNTU_MIRROR_@_ trusty-backports main restricted universe multiverse
+deb _@_UBUNTU_MIRROR_@_ xenial-backports main restricted universe multiverse
+#deb-src _@_UBUNTU_MIRROR_@_ xenial-backports main restricted universe multiverse
 
 # partner
-deb _@_UBUNTU_PARTNER_@_ trusty partner
-#deb http://archive.canonical.com/ubuntu trusty partner
-# deb-src http://archive.canonical.com/ubuntu trusty partner
+deb _@_UBUNTU_PARTNER_@_ xenial partner
+#deb http://archive.canonical.com/ubuntu xenial partner
+# deb-src http://archive.canonical.com/ubuntu xenial partner
 
 # extras
-deb _@_UBUNTU_EXTRAS_@_ trusty main
-#deb http://extras.ubuntu.com/ubuntu trusty main
-#deb-src http://extras.ubuntu.com/ubuntu trusty main
+deb _@_UBUNTU_EXTRAS_@_ xenial main
+#deb http://extras.ubuntu.com/ubuntu xenial main
+#deb-src http://extras.ubuntu.com/ubuntu xenial main
 
