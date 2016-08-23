@@ -30,7 +30,7 @@ deb _@_UBUNTU_PARTNER_@_ xenial partner
 # deb-src http://archive.canonical.com/ubuntu xenial partner
 
 # extras
-deb _@_UBUNTU_EXTRAS_@_ xenial main
+#deb _@_UBUNTU_EXTRAS_@_ xenial main
 #deb http://extras.ubuntu.com/ubuntu xenial main
 #deb-src http://extras.ubuntu.com/ubuntu xenial main
 
