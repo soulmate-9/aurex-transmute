@@ -1,0 +1,32 @@
+#!/bin/sh
+# -------
+# File:        aurex-gksu
+# Description: Quick and dirty replacement for gksu
+# Author:      Luis Antonio Garcia Gisbert <luisgg@gmail.com> 
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along 
+# with this program; if not, write to the Free Software Foundation, Inc., 
+# 51 Franklin St, Fifth Floor, Boston MA 02110-1301 USA
+# --------
+
+# vars
+# ----
+if [ -x /usr/bin/gksu ] ; then
+	exec /usr/bin/gksu "$@"
+elif [ -x /usr/bin/pkexec ] ; then
+	exec /usr/bin/pkexec env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY "$@"
+else
+	echo "Error: this program requires gksuu or pkexec but neither is installed">&2
+	exit 1
+fi
+exit 0
