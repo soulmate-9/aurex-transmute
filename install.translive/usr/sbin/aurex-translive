@@ -233,6 +233,8 @@ iso_gen(){
 	sed -i -e "/^#define DISKNAME/s%^.*%#define DISKNAME  $DISK_NAME%" live-cd/README.diskdefines
 
 	rsync -r /usr/share/translive/isolinux/ live-cd/isolinux/
+	rsync -r /usr/share/translive/boot/grub/ live-cd/boot/grub/
+	cp /usr/share/pixmaps/aurex/aurex-grub-efi.png live-cd/boot/grub/aurex.png
 	SPLASH_IMAGE="/usr/share/pixmaps/aurex/livedesktop-$ISO_ARCH.png"
 	[ ! -r "$SPLASH_IMAGE" ] || convert_to_rle "$SPLASH_IMAGE" > live-cd/isolinux/aurex.rle
 	

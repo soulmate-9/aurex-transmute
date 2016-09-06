@@ -1,2 +1,2 @@
 aurex.rle
-0fElija una opción:
+0fAurex 16.04 (legacy boot mode)[1->Probar, 2->Instalar, 3->Modo a prueba de fallos]:

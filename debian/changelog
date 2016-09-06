@@ -1,3 +1,9 @@
+aurex-transmute (16.04.8) xenial; urgency=medium
+
+  * Added customization for EFI boot
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 06 Sep 2016 17:13:05 +0200
+
 aurex-transmute (16.04.7) xenial; urgency=medium
 
   * Added preseed for lightdm and libdvd-pkg
