@@ -1,3 +1,9 @@
+aurex-transmute (16.04.10) xenial; urgency=medium
+
+  * Added davf2 preseed
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Wed, 07 Sep 2016 03:15:03 +0200
+
 aurex-transmute (16.04.9) xenial; urgency=medium
 
   * Fixed grub menu colors
