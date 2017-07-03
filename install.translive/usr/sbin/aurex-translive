@@ -144,6 +144,7 @@ chroot_unconfig(){
 	rm -fr "$CHROOT_PKG_DIR"
 	export HOME=/root
 	export LC_ALL=C
+	export TERM=linux
 	for f in $CHROOT_DIVERT_LIST ; do
 		if [ -e "chroot/$f.translive-divert" ] ; then
 			rm -f "chroot/$f"
@@ -158,6 +159,7 @@ chroot_unconfig(){
 chroot_interactive(){
 	export HOME=/root
 	export LC_ALL=C
+	export TERM=linux
 	echo ">>>>>>> INTERACTIVE MODE <<<<<<<<"
 	echo ">>>>>>> type 'exit' to end <<<<<<<<" 
 	chroot chroot
@@ -191,6 +193,7 @@ kernel_purge(){
 chroot_update(){
 	export HOME=/root
 	export LC_ALL=C
+	export TERM=linux
 	chroot chroot aurex-system-transmute full || true
 	chroot chroot apt-get --force-yes -y --allow-unauthenticated install $LIVE_PKG_LIST || true
 	kernel_purge
