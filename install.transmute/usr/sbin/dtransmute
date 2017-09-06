@@ -566,6 +566,7 @@ while [ -z "$END_PARAMETERS" ] ; do
 		--distro=*)
 			TR_DISTRO="${1#--distro=}"
 			shift
+			;;
 		*)
 			END_PARAMETERS="Y"
 			;;
