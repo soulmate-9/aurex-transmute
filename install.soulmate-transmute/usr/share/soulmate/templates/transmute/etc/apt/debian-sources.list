@@ -1,0 +1,17 @@
+# --------------
+# Debian sources
+# --------------
+deb _@_DEBIAN_MIRROR_@_ stretch main contrib non-free
+#deb-src _@_DEBIAN_MIRROR_@_ stretch main contrib non-free
+
+# updates
+deb _@_DEBIAN_MIRROR_@_ stretch-updates main contrib non-free
+#deb-src _@_DEBIAN_MIRROR_@_ stretch-updates main contrib non-free
+
+# security
+deb _@_DEBIAN_SECURITY_@_ stretch/updates main contrib non-free
+#deb-src _@_DEBIAN_SECURITY_@_ stretch/updates main contrib non-free
+
+# backports
+deb _@_DEBIAN_MIRROR_@_ stretch-backports main contrib non-free
+#deb-src _@_DEBIAN_MIRROR_@_ stretch-backports main contrib non-free

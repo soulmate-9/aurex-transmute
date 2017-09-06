@@ -1,3 +1,15 @@
+distro-transmute (17.09.01) stretch; urgency=medium
+
+  * Added soulmate specific binaries
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 05 Sep 2017 18:15:39 +0000
+
+distro-transmute (16.04.12) unstable; urgency=medium
+
+  * Source package renamed to distro-transmute
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sat, 26 Aug 2017 09:50:30 +0000
+
 aurex-transmute (16.04.11) xenial; urgency=medium
 
   * Added 'export TERM=linux' in translive chroot to fix debconf problems

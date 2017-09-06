@@ -1,7 +1,7 @@
 #!/bin/sh
 # -------
-# File:        aurex-transmute
-# Description: Transmute plain Ubuntu into golden AureX
+# File:        dtransmute
+# Description: Transmute plain distro into golden one
 # Author:      Luis Antonio Garcia Gisbert <luisgg@gmail.com> 
 # 
 # This program is free software; you can redistribute it and/or modify
@@ -18,16 +18,6 @@
 # with this program; if not, write to the Free Software Foundation, Inc., 
 # 51 Franklin St, Fifth Floor, Boston MA 02110-1301 USA
 # --------
-
-# vars
-# ----
-TR_BASE_DIR="/usr/share/aurex-transmute"
-
-if [ -r /etc/aurex/profile.sh ] ; then
-	. /etc/aurex/profile.sh
-else
-	. $TR_BASE_DIR/transmute/base-files/etc/aurex/profile.sh
-fi
 
 # funcs
 # -----
@@ -47,8 +37,16 @@ usage(){
 
 test_release(){
 	LSB_RELEASE="/usr/bin/lsb_release"
-	if [ -x "$LSB_RELEASE" ] && [ "$($LSB_RELEASE -rs)" = "$AUREX_RELEASE" ] ; then
-		return 0
+	if [ -x "$LSB_RELEASE" ] ; then
+		CURRENT_RELEASE="$($LSB_RELEASE -rs |sed -e "s%\.% %;s%\*%.*")"
+		rc=0
+		n=1
+		for v in $(echo "$TR_RELEASE" |tr "." " "); do
+			V="$($LSB_RELEASE -rs |cut -f $n -d ".")"
+			[ "$v" != "$V" ] || rc=1
+			n=$(($n + 1))
+		done
+		return $rc
 	fi
 	return 1
 }
@@ -79,7 +77,54 @@ test_ubuntu_sources(){
 #                return 1
 #	fi
 	return 0
-}	
+}
+
+test_debian_sources(){
+	for d in "$DEBIAN_CODENAME" "$DEBIAN_CODENAME-updates" "$DEBIAN_CODENAME-backports" "$DEBIAN_CODENAME/updates" ; do
+		for c in  main contrib non-free ; do
+			if ! grep -q "^deb[[:blank:]]\+[^[:blank:]]\+[[:blank:]]\+${d}[[:blank:]]\+.*\b$c\($\|[[:blank:]]\)" /etc/apt/sources.list ; then
+				echo "$d $c: not found" >&2
+				return 1
+			fi
+		done
+	done
+	return 0
+}
+test_soulmate_sources(){
+	for c in main contrib ; do
+		grep -q "^deb[[:blank:]]\+[^[:blank:]]\+/soulmate/\?[[:blank:]]\+$DEBIAN_CODENAME[[:blank:]]\+.*\b$c\($\|[[:blank:]]\)" /etc/apt/sources.list || return 1
+	done
+	return 0
+
+}
+
+test_parent_sources(){
+	rc=0
+	case "$TR_DISTRO" in
+		aurex)
+			test_ubuntu_sources || rc=$?
+			;;
+		soulmate)
+			test_debian_sources || rc=$?
+			;;
+	esac
+	return $rc
+
+}
+
+test_self_sources(){
+	rc=0
+	case "$TR_DISTRO" in
+		aurex)
+			test_aurex_sources || rc=$?
+			;;
+		soulmate)
+			test_soulmate_sources || rc=$?
+			;;
+	esac
+	return $rc
+
+}
 
 test_onekey(){
 	if [ -r "$1" ]; then
@@ -112,6 +157,14 @@ get_ubuntu_mirror(){
 	sed -ne "/^deb[[:blank:]]\+.*\.archive\.ubuntu\.com\/ubuntu\/\?[[:blank:]]\+$UBUNTU_CODENAME[[:blank:]]\+/{s%^deb[[:blank:]]\+%%;s%\(/ubuntu/\?\)[[:blank:]]\+$UBUNTU_CODENAME[[:blank:]]\+.*$%\1%;p}" /etc/apt/sources.list |head -1
 }
 
+get_debian_mirror(){
+	sed -ne "/^deb[[:blank:]]\+[^[:blank:]]\+[[:blank:]]\+$DEBIAN_CODENAME[[:blank:]]\+/{s%^deb[[:blank:]]\+\([^[:blank:]]\+\).*$%\1%;p}" /etc/apt/sources.list |head -1
+}
+
+get_debian_security(){
+	sed -ne "/^deb[[:blank:]]\+[^[:blank:]]\+[[:blank:]]\+$DEBIAN_CODENAME\/updates[[:blank:]]\+/{s%^deb[[:blank:]]\+\([^[:blank:]]\+\).*$%\1%;p}" /etc/apt/sources.list |head -1
+}
+
 trans_base_files(){
 	BASE_NAME_LIST="$GBASE_NAME_LIST"
 	[ "$BASE_NAME_LIST" ] || BASE_NAME_LIST="$(list_modules)"
@@ -135,6 +188,34 @@ untrans_base_files(){
 }
 
 trans_sources(){
+	rc=0
+	case "$TR_DISTRO" in
+		aurex)
+			aurex_trans_sources || rc=$?
+			;;
+		soulmate)
+			sm_trans_sources || rc=$?
+			;;
+	esac
+	return $rc
+
+}
+
+untrans_sources(){
+	rc=0
+	case "$TR_DISTRO" in
+		aurex)
+			aurex_untrans_sources || rc=$?
+			;;
+		soulmate)
+			sm_untrans_sources || rc=$?
+			;;
+	esac
+	return $rc
+
+}
+
+aurex_trans_sources(){
 	BASE_NAME_LIST="$GBASE_NAME_LIST"
 	[ -z "$BASE_NAME_LIST" -o "$BASE_NAME_LIST" = "transmute" ] || return 0
 	TMPFILE="$(tempfile)"
@@ -155,13 +236,43 @@ trans_sources(){
 	rm -f /etc/apt/sources.list.d/aurex-sources.list
 }
 
-untrans_sources(){
+sm_trans_sources(){
+	BASE_NAME_LIST="$GBASE_NAME_LIST"
+	[ -z "$BASE_NAME_LIST" -o "$BASE_NAME_LIST" = "transmute" ] || return 0
+	TMPFILE="$(tempfile)"
+	cp -a /etc/apt/sources.list "$TMPFILE"
+	:> "$TMPFILE"
+	DEBIAN_MIRROR="$(get_debian_mirror)"
+	[ "$DEBIAN_MIRROR" ] || DEBIAN_MIRROR="$DEBIAN_DEFMIRROR"
+	DEBIAN_MIRROR=${DEBIAN_FORCEMIRROR:-$DEBIAN_MIRROR}
+	SM_MIRROR=${SM_FORCEMIRROR:-$SM_DEFMIRROR}
+	DEBIAN_SECURITY="$(get_debian_security)"
+	[ "$DEBIAN_SECURITY" ] || DEBIAN_SECURITY="$DEBIAN_DEFSECURITY"
+	DEBIAN_SECURITY=${DEBIAN_FORCESECURITY:-$DEBIAN_SECURITY}
+	for t in soulmate-sources debian-sources ; do
+		sed -e "s%_@_SM_MIRROR_@_%$SM_MIRROR%g;s%_@_DEBIAN_MIRROR_@_%$DEBIAN_MIRROR%g;s%_@_DEBIAN_SECURITY_@_%$DEBIAN_SECURITY%g" /usr/share/soulmate/templates/transmute/etc/apt/$t.list >> "$TMPFILE"
+	done
+	TIMESTAMP="$(date "+%Y%m%d.%H%M%S")"
+	[ "$FORCE" ] || cp /etc/apt/sources.list /etc/apt/sources.list.soulmate.$TIMESTAMP
+	mv "$TMPFILE" /etc/apt/sources.list
+	rm -f /etc/apt/sources.list.d/soulmate-sources.list
+}
+
+aurex_untrans_sources(){
 	BASE_NAME_LIST="$GBASE_NAME_LIST"
 	[ -z "$BASE_NAME_LIST" -o "$BASE_NAME_LIST" = "transmute" ] || return 0
 	FIRST_SOURCES="$(ls -1 /etc/apt/sources.list.aurex.* 2>/dev/null |sort |head -1)"
 	[ "$FIRST_SOURCES" ] || FIRST_SOURCES=/usr/share/aurex/templates/transmute/etc/apt/standard-sources.list
 	cp "$FIRST_SOURCES" /etc/apt/sources.list
 	rm -f /etc/apt/sources.list.d/aurex-sources.list
+}
+sm_untrans_sources(){
+	BASE_NAME_LIST="$GBASE_NAME_LIST"
+	[ -z "$BASE_NAME_LIST" -o "$BASE_NAME_LIST" = "transmute" ] || return 0
+	FIRST_SOURCES="$(ls -1 /etc/apt/sources.list.soulmate.* 2>/dev/null |sort |head -1)"
+	[ "$FIRST_SOURCES" ] || FIRST_SOURCES=/usr/share/soulmate/templates/transmute/etc/apt/standard-sources.list
+	cp "$FIRST_SOURCES" /etc/apt/sources.list
+	rm -f /etc/apt/sources.list.d/soulmate-sources.list
 }
 
 trans_preseed(){
@@ -205,8 +316,8 @@ trans_keys(){
 				if ! test_onekey "$f" ; then
 					if apt-key add "$f" >/dev/null 2>/dev/null ; then
 						F="$(basename "$f")"
-						mkdir -p /var/lib/aurex/keys/$pdir
-						touch /var/lib/aurex/keys/$pdir/$F
+						mkdir -p /var/lib/${TR_DISTRO}/keys/$pdir
+						touch /var/lib/${TR_DISTRO}/keys/$pdir/$F
 					else
 						return $?
 					fi
@@ -220,7 +331,7 @@ untrans_keys(){
 	BASE_NAME_LIST="$GBASE_NAME_LIST"
 	[ "$BASE_NAME_LIST" ] || BASE_NAME_LIST="$(list_modules)"
 	for pdir in $BASE_NAME_LIST ; do
-		PDIR="/var/lib/aurex/keys/$pdir"
+		PDIR="/var/lib/${TR_DISTRO}/keys/$pdir"
 		if [ -d "$PDIR" ]; then
 			for f in $PDIR/*.gpg ; do
 				F="$(basename "$f" ".gpg")"
@@ -240,7 +351,7 @@ trans_divert(){
 		PDIR="$TR_BASE_DIR/$pdir/divert"
 		if [ -d "$PDIR" ] ; then
 			for f in $(find "$PDIR" -xtype f -printf "/%P\n") ; do
-				if [ ! -e "${f}.aurex-divert" ] && dpkg-divert --package aurex-transmute --rename --quiet --add --divert ${f}.aurex-divert ${f} || [ "$FORCE" ] ; then
+				if [ ! -e "${f}.${TR_DISTRO}-divert" ] && dpkg-divert --package ${TR_DISTRO}-transmute --rename --quiet --add --divert ${f}.${TR_DISTRO}-divert ${f} || [ "$FORCE" ] ; then
 					# copy only if file size > 0
 					[ ! -s "${PDIR}${f}" ] || cp -a "${PDIR}${f}" "${f}"
 				fi
@@ -256,9 +367,9 @@ untrans_divert(){
 		PDIR="$TR_BASE_DIR/$pdir/divert"
 		if [ -d "$PDIR" ] ; then
 			for f in $(find "$PDIR" -xtype f -printf "/%P\n") ; do
-				if [ -e "${f}.aurex-divert" ] ; then
+				if [ -e "${f}.${TR_DISTRO}-divert" ] ; then
 					rm -f "$f"
-					dpkg-divert --package aurex-transmute --rename --quiet --remove ${f} || true
+					dpkg-divert --package ${TR_DISTRO}-transmute --rename --quiet --remove ${f} || true
 				fi
 			done
 		fi
@@ -284,12 +395,12 @@ trans_reconfigure(){
 
 do_transmute(){
 	test_id || die "Error: You must be root, my friend"
-	test_release || die "Error: Invalid Ubuntu release"
+	test_release || die "Error: Invalid Target release"
 	if [ "$TFILES" = "Y" ] ; then
-		trans_base_files || die "Error: Unable to install AureX base-files"
+		trans_base_files || die "Error: Unable to install base-files"
 	fi
 	if [ "$TSOURCES" = "Y" ] && [ -z "$GBASE_NAME_LIST" -o "$GBASE_NAME_LIST" = "transmute" ] ; then
-		if [ "$FORCE" ] || ! test_ubuntu_sources || ! test_aurex_sources  ; then
+		if [ "$FORCE" ] || ! test_parent_sources || ! test_self_sources  ; then
 			trans_sources || die "Error: Unable to fix sources.list"
 		fi
 	fi
@@ -326,15 +437,15 @@ undo_transmute(){
 do_test(){
 	test_rc=0
 	if ! test_release ; then
-		echo "Invalid Ubuntu release" >&2
+		echo "Invalid Target release" >&2
 		test_rc=1
 	fi
-	if [ "$TSOURCES" = "Y" ] && ! test_ubuntu_sources ; then
-		echo "Invalid sources list: some Ubuntu components missing" >&2
+	if [ "$TSOURCES" = "Y" ] && ! test_parent_sources ; then
+		echo "Invalid sources list: some parent distribution components missing" >&2
 		test_rc=$(($test_rc + 2))
 	fi
-	if [ "$TSOURCES" = "Y" ] && ! test_aurex_sources ; then
-		echo "Invalid sources list: AureX component missing" >&2
+	if [ "$TSOURCES" = "Y" ] && ! test_self_sources ; then
+		echo "Invalid sources list: $TR_DISTRO component missing" >&2
 		test_rc=$(($test_rc + 4))
 	fi
 	if [ "$TFILES" = "Y" ] ; then
@@ -356,7 +467,7 @@ do_test(){
 		echo "gpg signin keys not installed" >&2
 		test_rc=$(($test_rc + 16))
 	fi
-	[ $test_rc -ne 0 ] || echo "All your base are belong to AureX"
+	[ $test_rc -ne 0 ] || echo "All your base are belong to soulmate"
 	return $test_rc
 }
 
@@ -376,10 +487,41 @@ force_fixvars(){
 	fi
 }
 
+guess_distroname(){
+	APP_NAME="$(basename "$0")"
+	if echo "$APP_NAME" |grep -q "^.\+\-transmute$" ; then
+		DNAME="${APP_NAME%-transmute}"
+	else
+		DNAME="aurex"
+	fi
+	if [ "$DNAME" = "sm" ] ; then
+		DNAME="soulmate"
+	fi
+	echo "$DNAME"
+}
+
+get_basedir(){
+	if [ "$TR_DISTRO" = "aurex" ] ; then
+		echo "/usr/share/${TR_DISTRO}-transmute"
+	else
+		echo "/usr/share/distro-transmute"
+	fi
+}
+
+get_release(){
+	if [ "$TR_DISTRO" = "aurex" ] ; then
+		echo "$AUREX_RELEASE"
+	else
+		echo "$TARGET_RELEASE"
+	fi
+}
+
 # main
 # ----
 
 GBASE_NAME_LIST=""
+
+TR_DISTRO="$(guess_distroname)"
 
 [ "$1" ] || usage
 while [ -z "$END_PARAMETERS" ] ; do
@@ -421,11 +563,30 @@ while [ -z "$END_PARAMETERS" ] ; do
 			GBASE_NAME_LIST="$(echo "$GBASE_NAME_LIST" |tr "," " ")"
 			shift
 			;;
+		--distro=*)
+			TR_DISTRO="${1#--distro=}"
+			shift
 		*)
 			END_PARAMETERS="Y"
 			;;
 	esac
 done
+
+# vars
+# ----
+TR_BASE_DIR="$(get_basedir)"
+
+if [ -r /etc/${TR_DISTRO}/profile.sh ] ; then
+	. /etc/${TR_DISTRO}/profile.sh
+else
+	. $TR_BASE_DIR/transmute/base-files/etc/${TR_DISTRO}/profile.sh
+fi
+
+TR_RELEASE="$(get_release)"
+[ "$TR_RELEASE" ] || die "Undefined target distribution release"
+
+# Determine action
+# ----------------
 
 [ "$1" ] || usage
 ACTION="$1"

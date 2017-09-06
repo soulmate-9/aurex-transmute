@@ -1,13 +1,32 @@
-Source: aurex-transmute
+Source: distro-transmute
 Section: admin
 Priority: optional
 Maintainer: Luis Antonio Garcia Gisbert <luisgg@gmail.com>
 Build-Depends: debhelper (>= 7.0), gettext
 Standards-Version:  3.9.7
 
-Package: aurex-transmute
+Package: distro-transmute
 Architecture: all
 Depends: ${misc:Depends}, rsync, apt
+Description: Transmute plain distribution into golden one
+ Utility to transmute distributions
+
+Package: soulmate-transmute
+Architecture: all
+Depends: ${misc:Depends}, distro-transmute
+Description: Transmute plain debian into golden soumate
+ Utility to transmute debian into soulmate
+
+Package: soulmate-keyring
+Architecture: all
+Depends: ${misc:Depends}, soulmate-transmute (= ${binary:Version})
+Description: GnuPG keys of the soulmate archive
+ The soulmate project digitally signs its Release files. This package
+ installs the archive keys used for that.
+
+Package: aurex-transmute
+Architecture: all
+Depends: ${misc:Depends}, distro-transmute
 Description: Transmute plain Ubuntu into golden AureX
  Utility to transmute Ubuntu into AureX
 

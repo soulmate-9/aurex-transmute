@@ -1,0 +1,174 @@
+#!/bin/sh
+# -------
+# File:        soulmate-system-transmute
+# Description: Install required sytem trasmutation level
+# Author:      Luis Antonio Garcia Gisbert <luisgg@gmail.com> 
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along 
+# with this program; if not, write to the Free Software Foundation, Inc., 
+# 51 Franklin St, Fifth Floor, Boston MA 02110-1301 USA
+# --------
+
+# vars
+# ----
+
+# funcs
+# -----
+
+die(){
+	echo "$1" >&2
+	exit 1
+}
+
+usage(){
+	die "Usage: $(basename "$0") {none|minimal|medium|full|get-level|update-level|pkg-update|pkg-remove}"
+}
+
+do_apt(){
+	if [ "$(dpkg --print-architecture)" = "amd64" ] ; then
+		# add i386 as foreign architecture
+		dpkg --add-architecture i386 || true
+	fi
+        apt-get update || true
+        apt-get --force-yes -y --allow-unauthenticated install soulmate-desktop || true
+        apt-get --force-yes -y --allow-unauthenticated dist-upgrade || true
+}
+
+set_level_none(){
+	update_level "none"
+	sm-transmute untransmute || true
+	do_apt
+}
+
+set_level_minimal(){
+	update_level "minimal"
+	sm-transmute untransmute || true
+	sm-transmute transmute keys
+	TMPFILE="$(tempfile)"
+        cp -a /etc/apt/sources.list "$TMPFILE"
+	:> "$TMPFILE"
+	sed -e "s%_@_SM_MIRROR_@_%$SM_MIRROR%g;s%_@_DEBIAN_MIRROR_@_%$DEBIAN_MIRROR%g;s%_@_DEBIAN_SECURITY_@_%$DEBIAN_SECURITY%g" /usr/share/soulmate/templates/transmute/etc/apt/soulmate-sources.list >> "$TMPFILE"
+
+
+	mv "$TMPFILE" /etc/apt/sources.list.d/soulmate-sources.list
+	do_apt
+}
+
+set_level_medium(){
+	update_level "medium"
+	sm-transmute untransmute || true
+	sm-transmute transmute keys || true
+#	sm-transmute --module=apt-preferences transmute || true
+	do_apt
+}
+
+set_level_full(){
+	update_level "full"
+	sm-transmute transmute || true
+	do_apt
+}
+
+say_level(){
+	echo "$1"
+	exit 0
+}
+get_level(){
+	[ ! -r "$SM_TR_LEVEL" ] || say_level "$(head -1 "$SM_TR_LEVEL")"
+	# try to guess ...
+	[ ! -r /etc/apt/preferences.d/aurex-ubuntu-meta ] || say_level "full"
+	[ ! -r /etc/apt/sources.list.d/aurex-sources.list ] || say_level "minimal"
+	[ ! -r /etc/apt/preferences.d/aurex-ubuntu ] || say_level "medium"
+	say_level "none"
+}
+
+update_level(){
+	CURRENT_LEVEL=""
+	[ ! -r "$SM_TR_LEVEL" ] || CURRENT_LEVEL="$(head -1 "$SM_TR_LEVEL")"
+	if [ "$1" ] ; then
+		NEW_LEVEL="$1"
+	else
+		NEW_LEVEL="$(get_level)"
+	fi
+	[ "$NEW_LEVEL" = "$CURRENT_LEVEL" ] || echo "$NEW_LEVEL" > "$SM_TR_LEVEL"
+}
+
+
+pkg_script(){
+	update_level
+	CURRENT_LEVEL="$(get_level)"
+	case "$CURRENT_LEVEL" in
+		minimal)
+			sm-transmute --module=transmute "$1" keys || true
+			;;
+		medium)
+			sm-transmute --module=transmute "$1" keys || true
+#			sm-transmute --module=apt-preferences "$1" || true
+			;;
+		full)
+			sm-transmute --module=transmute "$1" || true
+			;;
+	esac
+}
+
+
+# main
+
+TR_BASE_DIR="/usr/share/distro-transmute"
+TR_DISTRO="soulmate"
+if [ -r /etc/${TR_DISTRO}/profile.sh ] ; then
+	. /etc/${TR_DISTRO}/profile.sh
+else
+	. $TR_BASE_DIR/transmute/base-files/etc/${TR_DISTRO}/profile.sh
+fi
+
+DEBIAN_MIRROR=${DEBIAN_FORCEMIRROR:-$DEBIAN_DEFMIRROR}
+SM_MIRROR=${SM_FORCEMIRROR:-$SM_DEFMIRROR}
+DEBIAN_SECURITY=${DEBIAN_FORCESECURITY:-$DEBIAN_DEFSECURITY}
+
+
+SM_TR_LEVEL="/etc/soulmate/system-transmute"
+
+[ "$1" ] || usage
+
+case "$1" in
+	none)
+		set_level_none
+		;;
+	minimal)
+		set_level_minimal
+		;;
+	medium)
+		set_level_medium
+		;;
+	full)
+		set_level_full
+		;;
+	get-level)
+		get_level
+		;;
+	update-level)
+		update_level
+		;;
+	pkg-update)
+		pkg_script transmute
+		;;
+	pkg-remove)
+		pkg_script untransmute
+		;;
+	*)
+		usage
+		;;
+esac
+
+exit 0
+

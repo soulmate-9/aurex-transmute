@@ -1,0 +1,7 @@
+Package: debian-mate-default-settings
+Pin: release o=soulmate
+Pin-Priority: 1050
+
+Package: desktop-base
+Pin: release o=soulmate
+Pin-Priority: 1050
