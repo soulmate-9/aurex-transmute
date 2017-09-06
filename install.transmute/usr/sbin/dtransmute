@@ -38,12 +38,12 @@ usage(){
 test_release(){
 	LSB_RELEASE="/usr/bin/lsb_release"
 	if [ -x "$LSB_RELEASE" ] ; then
-		CURRENT_RELEASE="$($LSB_RELEASE -rs |sed -e "s%\.% %;s%\*%.*")"
+		CURRENT_RELEASE="$($LSB_RELEASE -rs |sed -e "s%\.% %;s%\*%.*%")"
 		rc=0
 		n=1
 		for v in $(echo "$TR_RELEASE" |tr "." " "); do
 			V="$($LSB_RELEASE -rs |cut -f $n -d ".")"
-			[ "$v" != "$V" ] || rc=1
+			[ "$v" = "$V" ] || rc=1
 			n=$(($n + 1))
 		done
 		return $rc

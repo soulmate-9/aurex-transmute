@@ -7,7 +7,7 @@ Standards-Version:  3.9.7
 
 Package: distro-transmute
 Architecture: all
-Depends: ${misc:Depends}, rsync, apt
+Depends: ${misc:Depends}, rsync, apt, lsb-release
 Description: Transmute plain distribution into golden one
  Utility to transmute distributions
 
@@ -57,7 +57,7 @@ Description: Aurex transmute GTK interface
 
 Package: aurex-instant
 Architecture: all
-Depends: ${misc:Depends}, rsync, apt, zenity
+Depends: ${misc:Depends}, rsync, apt, zenity, lsb-release
 Provides: aurex-transmute, aurex-transmute-gui
 Replaces: aurex-transmute, aurex-transmute-gui
 Conflicts: aurex-transmute, aurex-transmute-gui
