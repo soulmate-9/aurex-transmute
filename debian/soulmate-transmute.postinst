@@ -2,7 +2,7 @@
 
 case "$1" in
     configure)
-	aurex-system-transmute pkg-update
+	soulmate-system-transmute pkg-update
 	;;
     abort-upgrade|abort-remove|abort-deconfigure)
     	;;
