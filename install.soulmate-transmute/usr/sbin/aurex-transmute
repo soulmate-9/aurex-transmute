@@ -19,4 +19,4 @@
 # 51 Franklin St, Fifth Floor, Boston MA 02110-1301 USA
 # --------
 
-exec /usr/sbin/sm-transmute --transdir="/usr/share/aurex-transmute/" "$@"
+exec /usr/sbin/sm-transmute --no-sources --transdir="/usr/share/aurex-transmute/" "$@"

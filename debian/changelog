@@ -1,3 +1,9 @@
+distro-transmute (17.09.06) stretch; urgency=medium
+
+  * Avoid source transmutation in aurex-transmute soulmate compatibility 
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sun, 10 Sep 2017 01:25:42 +0000
+
 distro-transmute (17.09.05) stretch; urgency=medium
 
   * added aurex-transmute compatibility to soulmate-transmute
