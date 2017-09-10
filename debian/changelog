@@ -1,3 +1,9 @@
+distro-transmute (17.09.05) stretch; urgency=medium
+
+  * added aurex-transmute compatibility to soulmate-transmute
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sat, 09 Sep 2017 23:16:15 +0000
+
 distro-transmute (17.09.04) stretch; urgency=medium
 
   * 'transmute keys' fixed

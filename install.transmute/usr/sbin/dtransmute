@@ -522,6 +522,7 @@ get_release(){
 GBASE_NAME_LIST=""
 
 TR_DISTRO="$(guess_distroname)"
+TR_BASE_DIR=""
 
 [ "$1" ] || usage
 while [ -z "$END_PARAMETERS" ] ; do
@@ -567,6 +568,10 @@ while [ -z "$END_PARAMETERS" ] ; do
 			TR_DISTRO="${1#--distro=}"
 			shift
 			;;
+		--transdir=*)
+			TR_BASE_DIR="${1#--transdir=}"
+			shift
+			;;
 		*)
 			END_PARAMETERS="Y"
 			;;
@@ -575,7 +580,7 @@ done
 
 # vars
 # ----
-TR_BASE_DIR="$(get_basedir)"
+[ "$TR_BASE_DIR" ] || TR_BASE_DIR="$(get_basedir)"
 
 if [ -r /etc/${TR_DISTRO}/profile.sh ] ; then
 	. /etc/${TR_DISTRO}/profile.sh

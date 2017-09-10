@@ -14,6 +14,9 @@ Description: Transmute plain distribution into golden one
 Package: soulmate-transmute
 Architecture: all
 Depends: ${misc:Depends}, distro-transmute
+Provides: aurex-transmute
+Replaces: aurex-transmute
+Conflicts: aurex-transmute
 Description: Transmute plain debian into golden soumate
  Utility to transmute debian into soulmate
 
