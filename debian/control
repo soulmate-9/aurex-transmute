@@ -16,7 +16,7 @@ Architecture: all
 Depends: ${misc:Depends}, distro-transmute
 Provides: aurex-transmute
 Replaces: aurex-transmute
-Conflicts: aurex-transmute
+Conflicts: aurex-transmute, aurex-unplugged-theme
 Description: Transmute plain debian into golden soumate
  Utility to transmute debian into soulmate
 

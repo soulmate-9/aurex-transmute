@@ -1,3 +1,9 @@
+distro-transmute (17.09.07) stretch; urgency=medium
+
+  * Set a conflict for soulmate-transmeta to avoid installation of 'aurex-unplugged-theme'
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sun, 10 Sep 2017 16:29:55 +0000
+
 distro-transmute (17.09.06) stretch; urgency=medium
 
   * Avoid source transmutation in aurex-transmute soulmate compatibility 
