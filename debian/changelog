@@ -1,3 +1,10 @@
+distro-transmute (17.09.08) stretch; urgency=medium
+
+  * Avoid reading debian mirror from current sources.list as
+    workaround to fix debian sourdes.list generation
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 12 Sep 2017 07:57:23 +0000
+
 distro-transmute (17.09.07) stretch; urgency=medium
 
   * Set a conflict for soulmate-transmeta to avoid installation of 'aurex-unplugged-theme'

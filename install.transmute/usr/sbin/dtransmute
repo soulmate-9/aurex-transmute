@@ -242,7 +242,8 @@ sm_trans_sources(){
 	TMPFILE="$(tempfile)"
 	cp -a /etc/apt/sources.list "$TMPFILE"
 	:> "$TMPFILE"
-	DEBIAN_MIRROR="$(get_debian_mirror)"
+	#DEBIAN_MIRROR="$(get_debian_mirror)"
+	DEBIAN_MIRROR=""
 	[ "$DEBIAN_MIRROR" ] || DEBIAN_MIRROR="$DEBIAN_DEFMIRROR"
 	DEBIAN_MIRROR=${DEBIAN_FORCEMIRROR:-$DEBIAN_MIRROR}
 	SM_MIRROR=${SM_FORCEMIRROR:-$SM_DEFMIRROR}
