@@ -1,3 +1,9 @@
+distro-transmute (17.09.09) stretch; urgency=medium
+
+  * Added aditional packages to soulmate-system-transmute
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Tue, 12 Sep 2017 21:09:09 +0000
+
 distro-transmute (17.09.08) stretch; urgency=medium
 
   * Avoid reading debian mirror from current sources.list as
