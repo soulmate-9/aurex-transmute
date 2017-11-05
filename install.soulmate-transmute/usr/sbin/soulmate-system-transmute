@@ -40,6 +40,7 @@ do_apt(){
 		dpkg --add-architecture i386 || true
 	fi
         apt-get update || true
+        apt-get --force-yes -y --allow-unauthenticated install soulmate-base-files || true
         apt-get --force-yes -y --allow-unauthenticated install soulmate-desktop sm-meta-debian-core sm-meta-debian-mate || true
         apt-get --force-yes -y --allow-unauthenticated dist-upgrade || true
 }

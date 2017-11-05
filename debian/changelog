@@ -1,3 +1,9 @@
+distro-transmute (17.11.05) stretch; urgency=medium
+
+  * Added soulmate-base-files to soulmate-system-transmute
+
+ -- Luis Antonio Garcia Gisbert <luisgg@gmail.com>  Sun, 05 Nov 2017 21:28:05 +0000
+
 distro-transmute (17.09.09) stretch; urgency=medium
 
   * Added aditional packages to soulmate-system-transmute
